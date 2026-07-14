@@ -1,0 +1,133 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const url = new URL(Astro.request.url);
+const email = url.searchParams.get('email') || '';
+const emailMessage = email ? `We've sent a verification link to ${email}.` : "We've sent a verification link to your email address.";
+---
+
+<Layout>
+  <main class="check-email-page">
+    <div class="background-glow mesh-1"></div>
+    <div class="background-glow mesh-2"></div>
+    <section class="check-email-card">
+      <div class="email-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <path d="m22 6-10 7L2 6"></path>
+        </svg>
+      </div>
+      <h1>Check your email</h1>
+      <p>{emailMessage}</p>
+      <p class="subtitle">Open the email we just sent and click the verification link to finish setting up your account.</p>
+      <a href="/login" class="secondary-btn">Back to login</a>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .check-email-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background-color: #030014;
+  }
+
+  .background-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mesh-1 {
+    top: -10%;
+    left: -10%;
+    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  }
+
+  .mesh-2 {
+    bottom: -10%;
+    right: -10%;
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+  }
+
+  .check-email-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    background: rgba(24, 24, 27, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 44px;
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    text-align: center;
+    color: #f4f4f5;
+  }
+
+  .email-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 22px;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+  }
+
+  .email-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #dbeafe;
+  }
+
+  .check-email-card h1 {
+    margin: 0 0 18px;
+    font-size: 2rem;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    color: #ffffff;
+  }
+
+  .check-email-card p {
+    margin: 0 auto;
+    max-width: 380px;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #d4d4d8;
+  }
+
+  .check-email-card .subtitle {
+    margin-top: 16px;
+    color: #9ca3af;
+  }
+
+  .secondary-btn {
+    display: inline-flex;
+    margin-top: 28px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    color: #f4f4f5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .secondary-btn:hover {
+    background: rgba(168, 85, 247, 0.16);
+    border-color: rgba(168, 85, 247, 0.4);
+  }
+</style>

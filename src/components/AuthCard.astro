@@ -1,0 +1,848 @@
+---
+interface Props {
+  initialMode?: 'login' | 'signup';
+}
+
+const { initialMode = 'login' } = Astro.props;
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.meta.env.TURNSTILE_SITE_KEY;
+---
+
+<div class="auth-card-container">
+  <!-- Interactive Auth Card -->
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <div class="auth-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5"></path>
+          <path d="M2 12l10 5 10-5"></path>
+        </svg>
+        <span>AstroAuth</span>
+      </div>
+      <h2 id="auth-title">Welcome back</h2>
+      <p id="auth-subtitle">Please enter your credentials to access your account.</p>
+    </div>
+
+    <!-- Mode Tabs -->
+    <div class="auth-tabs" role="tablist">
+      <button 
+        type="button" 
+        id="tab-login" 
+        class={`auth-tab ${initialMode === 'login' ? 'active' : ''}`}
+        role="tab" 
+        aria-selected={initialMode === 'login'} 
+        aria-controls="auth-form"
+        data-mode="login"
+      >
+        Sign In
+      </button>
+      <button 
+        type="button" 
+        id="tab-signup" 
+        class={`auth-tab ${initialMode === 'signup' ? 'active' : ''}`}
+        role="tab" 
+        aria-selected={initialMode === 'signup'} 
+        aria-controls="auth-form"
+        data-mode="signup"
+      >
+        Create Account
+      </button>
+    </div>
+
+    <!-- Alert Message Box -->
+    <div id="auth-alert" class="auth-alert hidden" role="alert">
+      <span class="alert-icon"></span>
+      <span id="auth-alert-message" class="alert-message"></span>
+    </div>
+
+    <!-- Form -->
+    <form id="auth-form" class="auth-form" novalidate>
+      <div class="honeypot-field" aria-hidden="true">
+        <label for="auth-website">Website</label>
+        <input type="text" id="auth-website" name="website" autocomplete="off" tabindex="-1" />
+      </div>
+      <!-- Name Field (Only visible in Sign Up mode) -->
+      <div class={`form-group ${initialMode === 'signup' ? '' : 'hidden'}`} id="name-group">
+        <label for="auth-name">Full Name</label>
+        <div class="input-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <input 
+            type="text" 
+            id="auth-name" 
+            name="name" 
+            autocomplete="name"
+            placeholder="John Doe" 
+            required={initialMode === 'signup'} 
+          />
+        </div>
+        <span class="field-error" id="name-error"></span>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="auth-email">Email Address</label>
+        <div class="input-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
+          </svg>
+          <input 
+            type="email" 
+            id="auth-email" 
+            name="email" 
+            autocomplete="email"
+            placeholder="you@example.com" 
+            required 
+          />
+        </div>
+        <span class="field-error" id="email-error"></span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="auth-password">Password</label>
+        <div class="input-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <input 
+            type="password" 
+            id="auth-password" 
+            name="password" 
+            autocomplete={initialMode === 'signup' ? 'new-password' : 'current-password'}
+            placeholder="••••••••" 
+            required 
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            id="password-toggle"
+            aria-label="Toggle password visibility"
+            tabindex="-1"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-off-icon hidden">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+        <span class="field-error" id="password-error"></span>
+        <div class={`forgot-password-row ${initialMode === 'login' ? '' : 'hidden'}`} id="forgot-password-row">
+          <a href="/forgot-password" class="forgot-password-link">Forgot password?</a>
+        </div>
+      </div>
+
+      <!-- Cloudflare Turnstile CAPTCHA -->
+      <div class="turnstile-container">
+        <div 
+          class="cf-turnstile" 
+          id="turnstile-widget"
+          data-sitekey={TURNSTILE_SITE_KEY} 
+          data-theme="dark"
+        ></div>
+        <span class="field-error" id="turnstile-error"></span>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="auth-submit-btn" class="auth-btn">
+        <span class="btn-text" id="btn-text-content">
+          {initialMode === 'login' ? 'Sign In' : 'Create Account'}
+        </span>
+        <div class="spinner hidden" id="btn-spinner"></div>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Load Turnstile Script -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  import { actions, isActionError } from 'astro:actions';
+
+  // State
+  let currentMode = document.querySelector('.auth-tab.active')?.getAttribute('data-mode') || 'login';
+
+  // Elements
+  const form = document.getElementById('auth-form') as HTMLFormElement;
+  const tabLogin = document.getElementById('tab-login') as HTMLButtonElement;
+  const tabSignup = document.getElementById('tab-signup') as HTMLButtonElement;
+  const nameGroup = document.getElementById('name-group') as HTMLDivElement;
+  const forgotPasswordRow = document.getElementById('forgot-password-row') as HTMLDivElement;
+  const nameInput = document.getElementById('auth-name') as HTMLInputElement;
+  const emailInput = document.getElementById('auth-email') as HTMLInputElement;
+  const passwordInput = document.getElementById('auth-password') as HTMLInputElement;
+  const honeypotInput = document.getElementById('auth-website') as HTMLInputElement;
+  const passwordToggle = document.getElementById('password-toggle') as HTMLButtonElement;
+  
+  const authTitle = document.getElementById('auth-title') as HTMLHeadingElement;
+  const authSubtitle = document.getElementById('auth-subtitle') as HTMLParagraphElement;
+  const submitBtn = document.getElementById('auth-submit-btn') as HTMLButtonElement;
+  const btnText = document.getElementById('btn-text-content') as HTMLSpanElement;
+  const btnSpinner = document.getElementById('btn-spinner') as HTMLDivElement;
+  
+  const alertBox = document.getElementById('auth-alert') as HTMLDivElement;
+  const alertMessage = document.getElementById('auth-alert-message') as HTMLSpanElement;
+  
+  // Error Elements
+  const nameError = document.getElementById('name-error') as HTMLSpanElement;
+  const emailError = document.getElementById('email-error') as HTMLSpanElement;
+  const passwordError = document.getElementById('password-error') as HTMLSpanElement;
+  const turnstileError = document.getElementById('turnstile-error') as HTMLSpanElement;
+
+  // Toggle Mode
+  function setMode(mode: 'login' | 'signup') {
+    currentMode = mode;
+    clearAlert();
+    clearFieldErrors();
+
+    // Toggle active tabs
+    if (mode === 'login') {
+      tabLogin.classList.add('active');
+      tabLogin.setAttribute('aria-selected', 'true');
+      tabSignup.classList.remove('active');
+      tabSignup.setAttribute('aria-selected', 'false');
+
+      nameGroup.classList.add('hidden');
+      nameInput.removeAttribute('required');
+      forgotPasswordRow.classList.remove('hidden');
+
+      authTitle.textContent = 'Welcome back';
+      authSubtitle.textContent = 'Please enter your credentials to access your account.';
+      btnText.textContent = 'Sign In';
+
+      // Update URL silently
+      window.history.pushState(null, '', '/login');
+    } else {
+      tabSignup.classList.add('active');
+      tabSignup.setAttribute('aria-selected', 'true');
+      tabLogin.classList.remove('active');
+      tabLogin.setAttribute('aria-selected', 'false');
+
+      nameGroup.classList.remove('hidden');
+      nameInput.setAttribute('required', 'true');
+      forgotPasswordRow.classList.add('hidden');
+
+      authTitle.textContent = 'Create account';
+      authSubtitle.textContent = 'Get started with your free account today.';
+      btnText.textContent = 'Create Account';
+
+      // Update URL silently
+      window.history.pushState(null, '', '/signup');
+    }
+
+    // Reset turnstile widget when switching modes
+    resetTurnstile();
+  }
+
+  // Event Listeners for tabs
+  tabLogin.addEventListener('click', () => setMode('login'));
+  tabSignup.addEventListener('click', () => setMode('signup'));
+
+  // Password toggle visibility
+  passwordToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    
+    // Toggle icon visibility
+    const eyeIcon = passwordToggle.querySelector('.eye-icon') as SVGElement;
+    const eyeOffIcon = passwordToggle.querySelector('.eye-off-icon') as SVGElement;
+    eyeIcon.classList.toggle('hidden');
+    eyeOffIcon.classList.toggle('hidden');
+  });
+
+  // Handle URL change from browser navigation (back/forward)
+  window.addEventListener('popstate', () => {
+    const path = window.location.pathname;
+    if (path === '/signup') {
+      setMode('signup');
+    } else if (path === '/login') {
+      setMode('login');
+    }
+  });
+
+  // Helpers
+  function showAlert(message: string, type: 'error' | 'success') {
+    alertBox.className = `auth-alert ${type}`;
+    alertMessage.textContent = message;
+    alertBox.setAttribute('aria-live', 'polite');
+  }
+
+  function clearAlert() {
+    alertBox.className = 'auth-alert hidden';
+    alertMessage.textContent = '';
+  }
+
+  function clearFieldErrors() {
+    nameError.textContent = '';
+    emailError.textContent = '';
+    passwordError.textContent = '';
+    turnstileError.textContent = '';
+    
+    nameInput.classList.remove('error');
+    emailInput.classList.remove('error');
+    passwordInput.classList.remove('error');
+  }
+
+  function validateForm(): boolean {
+    clearFieldErrors();
+    let isValid = true;
+
+    if (honeypotInput.value.trim()) {
+      showAlert('Unable to process your request at this time.', 'error');
+      return false;
+    }
+
+    if (currentMode === 'signup') {
+      if (!nameInput.value.trim()) {
+        nameError.textContent = 'Name is required.';
+        nameInput.classList.add('error');
+        isValid = false;
+      } else if (nameInput.value.trim().length < 2) {
+        nameError.textContent = 'Name must be at least 2 characters.';
+        nameInput.classList.add('error');
+        isValid = false;
+      }
+    }
+
+    if (!emailInput.value.trim()) {
+      emailError.textContent = 'Email is required.';
+      emailInput.classList.add('error');
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(emailInput.value)) {
+      emailError.textContent = 'Please enter a valid email address.';
+      emailInput.classList.add('error');
+      isValid = false;
+    }
+
+    if (!passwordInput.value) {
+      passwordError.textContent = 'Password is required.';
+      passwordInput.classList.add('error');
+      isValid = false;
+    } else if (passwordInput.value.length < 6) {
+      passwordError.textContent = 'Password must be at least 6 characters.';
+      passwordInput.classList.add('error');
+      isValid = false;
+    }
+
+    const formData = new FormData(form);
+    const turnstileToken = formData.get('cf-turnstile-response') as string;
+    
+    if (!turnstileToken) {
+      turnstileError.textContent = 'Please complete the security challenge.';
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  function resetTurnstile() {
+    if (typeof (window as any).turnstile !== 'undefined') {
+      (window as any).turnstile.reset();
+    }
+  }
+
+  // Form Submission
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearAlert();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    // Set loading state
+    submitBtn.disabled = true;
+    btnText.classList.add('invisible');
+    btnSpinner.classList.remove('hidden');
+
+    const formData = new FormData(form);
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const name = nameInput.value;
+    const turnstileToken = formData.get('cf-turnstile-response') as string;
+
+    try {
+      if (currentMode === 'login') {
+        const { data, error } = await actions.signIn({ email, password, turnstileToken });
+        
+        if (error) {
+          if (isActionError(error)) {
+            showAlert(error.message, 'error');
+          } else {
+            showAlert('An unexpected error occurred. Please try again.', 'error');
+          }
+          resetTurnstile();
+        } else if (data?.success) {
+          showAlert('Login successful! Redirecting...', 'success');
+          setTimeout(() => {
+            window.location.href = '/dashboard';
+          }, 1000);
+        }
+      } else {
+        const { data, error } = await actions.signUp({ name, email, password, turnstileToken });
+        
+        if (error) {
+          if (isActionError(error)) {
+            showAlert(error.message, 'error');
+          } else {
+            showAlert('An unexpected error occurred. Please try again.', 'error');
+          }
+          resetTurnstile();
+        } else if (data?.success) {
+          if (data.hasSession) {
+            showAlert('Login successful! Redirecting...', 'success');
+            setTimeout(() => {
+              window.location.href = '/dashboard';
+            }, 1500);
+          } else {
+            window.location.href = `/check-email?email=${encodeURIComponent(email)}`;
+          }
+        }
+      }
+    } catch (err: any) {
+      showAlert('Network error. Please try again.', 'error');
+      resetTurnstile();
+    } finally {
+      // Clear loading state
+      submitBtn.disabled = false;
+      btnText.classList.remove('invisible');
+      btnSpinner.classList.add('hidden');
+    }
+  });
+</script>
+
+<style>
+  /* Premium Glassmorphic Styling System */
+  :root {
+    --color-bg-mesh-1: rgba(99, 102, 241, 0.15);
+    --color-bg-mesh-2: rgba(168, 85, 247, 0.15);
+    --color-primary: #6366f1;
+    --color-primary-hover: #4f46e5;
+    --color-accent: #a855f7;
+    --color-text-base: #f4f4f5;
+    --color-text-muted: #a1a1aa;
+    --color-card-bg: rgba(24, 24, 27, 0.65);
+    --color-input-bg: rgba(9, 9, 11, 0.5);
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-focus: rgba(99, 102, 241, 0.5);
+    --color-error: #ef4444;
+    --color-success: #10b981;
+    --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .auth-card-container {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    font-family: var(--font-family);
+    color: var(--color-text-base);
+    box-sizing: border-box;
+  }
+
+  .auth-card-container *,
+  .auth-card-container *::before,
+  .auth-card-container *::after {
+    box-sizing: border-box;
+  }
+
+  /* Glassmorphism Card styling */
+  .auth-card {
+    background: var(--color-card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow-premium);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .auth-card:hover {
+    box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6), 
+                0 0 30px 2px rgba(99, 102, 241, 0.08);
+  }
+
+  .auth-card-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .auth-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+  }
+
+  .logo-icon {
+    width: 24px;
+    height: 24px;
+    stroke: #818cf8;
+  }
+
+  .auth-card-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    background: linear-gradient(to right, #ffffff, #e4e4e7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .auth-card-header p {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Tab controls */
+  .auth-tabs {
+    display: flex;
+    background: rgba(9, 9, 11, 0.4);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 28px;
+  }
+
+  .auth-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .auth-tab:hover {
+    color: var(--color-text-base);
+  }
+
+  .auth-tab.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-text-base);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Form components */
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .form-group.hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .form-group label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-base);
+    letter-spacing: 0.3px;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .input-wrapper:focus-within {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15),
+                0 4px 12px rgba(99, 102, 241, 0.05);
+  }
+
+  .input-wrapper:focus-within input {
+    border-color: var(--color-primary);
+  }
+
+  .input-wrapper:focus-within .input-icon,
+  .input-wrapper:focus-within .password-toggle {
+    color: var(--color-primary);
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    transition: color 0.2s ease;
+  }
+
+  .input-wrapper input {
+    width: 100%;
+    background: var(--color-input-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 13px 16px 13px 44px;
+    color: var(--color-text-base);
+    font-size: 0.9375rem;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .input-wrapper input::placeholder {
+    color: #52525b;
+  }
+
+  .input-wrapper input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15),
+                0 4px 12px rgba(99, 102, 241, 0.05);
+    background: rgba(9, 9, 11, 0.7);
+  }
+
+  .input-wrapper input:focus + .input-icon {
+    color: var(--color-primary);
+  }
+
+  .input-wrapper input.error {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  }
+
+  .honeypot-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
+  }
+
+  .password-toggle:hover {
+    color: var(--color-accent);
+  }
+
+  .password-toggle:focus {
+    outline: none;
+  }
+
+  .password-toggle .eye-icon,
+  .password-toggle .eye-off-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .password-toggle .eye-icon.hidden,
+  .password-toggle .eye-off-icon.hidden {
+    display: none;
+  }
+
+  .field-error {
+    font-size: 0.75rem;
+    color: var(--color-error);
+    font-weight: 500;
+  }
+
+  .forgot-password-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2px;
+  }
+
+  .forgot-password-row.hidden {
+    display: none;
+  }
+
+  .forgot-password-link {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .forgot-password-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Captcha styling */
+  .turnstile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    margin: 8px 0;
+  }
+
+  /* Submit button styling */
+  .auth-btn {
+    position: relative;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    padding: 14px;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+  }
+
+  .auth-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(99, 102, 241, 0.35),
+                0 0 16px rgba(168, 85, 247, 0.2);
+    filter: brightness(1.05);
+  }
+
+  .auth-btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .auth-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .btn-text.invisible {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .btn-text {
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  /* Loader spinner */
+  .spinner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .spinner.hidden {
+    display: none;
+  }
+
+  /* Alert system */
+  .auth-alert {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 24px;
+    animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+  }
+
+  .auth-alert.hidden {
+    display: none;
+  }
+
+  .auth-alert.error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+  }
+
+  .auth-alert.success {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.2);
+    color: #6ee7b7;
+  }
+
+  .alert-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .error .alert-icon {
+    /* SVG alert icon */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ef4444'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'/%3E%3C/svg%3E");
+  }
+
+  .success .alert-icon {
+    /* SVG check icon */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310b981'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E");
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
