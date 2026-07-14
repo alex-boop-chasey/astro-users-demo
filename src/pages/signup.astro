@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AuthCard from '../components/AuthCard.astro';
+---
+
+<Layout>
+  <main class="auth-page">
+    <div class="background-glow mesh-1"></div>
+    <div class="background-glow mesh-2"></div>
+    <AuthCard initialMode="signup" />
+  </main>
+</Layout>
+
+<style>
+  .auth-page {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+    background-color: #030014;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  /* Decorative Background Glows */
+  .background-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mesh-1 {
+    top: -10%;
+    left: -10%;
+    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  }
+
+  .mesh-2 {
+    bottom: -10%;
+    right: -10%;
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+  }
+</style>
