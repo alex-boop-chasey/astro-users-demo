@@ -33,7 +33,7 @@ const emailMessage = email ? `We've sent a verification link to ${email}.` : "We
     justify-content: center;
     align-items: center;
     padding: 24px;
-    background-color: #030014;
+    background-color: var(--color-bg);
   }
 
   .background-glow {
@@ -50,13 +50,13 @@ const emailMessage = email ? `We've sent a verification link to ${email}.` : "We
   .mesh-1 {
     top: -10%;
     left: -10%;
-    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+    background: var(--gradient-mesh-primary);
   }
 
   .mesh-2 {
     bottom: -10%;
     right: -10%;
-    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    background: var(--gradient-mesh-accent);
   }
 
   .check-email-card {
@@ -64,15 +64,15 @@ const emailMessage = email ? `We've sent a verification link to ${email}.` : "We
     z-index: 1;
     width: 100%;
     max-width: 520px;
-    background: rgba(24, 24, 27, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 28px;
+    background: var(--color-card-bg-solid);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-3xl);
     padding: 44px;
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.55);
+    box-shadow: var(--shadow-card);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     text-align: center;
-    color: #f4f4f5;
+    color: var(--color-text-base);
   }
 
   .email-icon {
@@ -82,14 +82,14 @@ const emailMessage = email ? `We've sent a verification link to ${email}.` : "We
     display: grid;
     place-items: center;
     border-radius: 22px;
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: var(--tint-primary-weak);
+    border: 1px solid var(--tint-primary-border-strong);
   }
 
   .email-icon svg {
     width: 32px;
     height: 32px;
-    stroke: #dbeafe;
+    stroke: var(--color-primary-soft);
   }
 
   .check-email-card h1 {
@@ -97,7 +97,7 @@ const emailMessage = email ? `We've sent a verification link to ${email}.` : "We
     font-size: 2rem;
     letter-spacing: -0.04em;
     line-height: 1.05;
-    color: #ffffff;
+    color: var(--color-text-strong);
   }
 
   .check-email-card p {
@@ -105,29 +105,29 @@ const emailMessage = email ? `We've sent a verification link to ${email}.` : "We
     max-width: 380px;
     font-size: 1rem;
     line-height: 1.75;
-    color: #d4d4d8;
+    color: var(--color-text-dim);
   }
 
   .check-email-card .subtitle {
     margin-top: 16px;
-    color: #9ca3af;
+    color: var(--color-text-faint);
   }
 
   .secondary-btn {
     display: inline-flex;
     margin-top: 28px;
     padding: 14px 24px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border-soft);
     background: transparent;
-    color: #f4f4f5;
+    color: var(--color-text-base);
     text-decoration: none;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
   }
 
   .secondary-btn:hover {
-    background: rgba(168, 85, 247, 0.16);
-    border-color: rgba(168, 85, 247, 0.4);
+    background: var(--tint-accent-hover);
+    border-color: var(--tint-accent-border-strong);
   }
 </style>

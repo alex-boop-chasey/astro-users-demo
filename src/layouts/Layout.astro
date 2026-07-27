@@ -1,3 +1,7 @@
+---
+import '../styles/theme.css';
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -29,9 +33,9 @@
 		padding: 0;
 		width: 100%;
 		height: 100%;
-		background-color: #030014;
-		color: #f4f4f5;
-		font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		background-color: var(--color-bg);
+		color: var(--color-text-base);
+		font-family: var(--font-family);
 		scroll-behavior: smooth;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
@@ -42,13 +46,13 @@
 		width: 10px;
 	}
 	::-webkit-scrollbar-track {
-		background: #030014;
+		background: var(--color-bg);
 	}
 	::-webkit-scrollbar-thumb {
-		background: rgba(255, 255, 255, 0.1);
+		background: var(--color-surface-hover);
 		border-radius: 5px;
 	}
 	::-webkit-scrollbar-thumb:hover {
-		background: rgba(255, 255, 255, 0.2);
+		background: var(--color-surface-hover-strong);
 	}
 </style>

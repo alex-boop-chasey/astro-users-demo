@@ -19,7 +19,7 @@ import AuthCard from '../components/AuthCard.astro';
     align-items: center;
     min-height: 100vh;
     padding: 24px;
-    background-color: #030014;
+    background-color: var(--color-bg);
     overflow: hidden;
     box-sizing: border-box;
   }
@@ -39,12 +39,12 @@ import AuthCard from '../components/AuthCard.astro';
   .mesh-1 {
     top: -10%;
     left: -10%;
-    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+    background: var(--gradient-mesh-primary);
   }
 
   .mesh-2 {
     bottom: -10%;
     right: -10%;
-    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    background: var(--gradient-mesh-accent);
   }
 </style>

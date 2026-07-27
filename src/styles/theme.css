@@ -1,0 +1,117 @@
+/*
+ * AstroAuth design tokens.
+ * Single source of truth for colors, gradients, shadows, radii and type.
+ * Imported once from src/layouts/Layout.astro — never redeclare these in a page.
+ */
+
+:root {
+	/* ---------- Brand palette ---------- */
+	--color-primary: #6366f1;
+	--color-primary-hover: #4f46e5;
+	--color-primary-light: #818cf8;
+	--color-primary-lighter: #a5b4fc;
+	--color-primary-soft: #c7d2fe;
+	--color-accent: #a855f7;
+	--color-accent-light: #c084fc;
+	--color-accent-soft: #d8b4fe;
+	--color-pink: #ec4899;
+	--color-pink-soft: #fbcfe8;
+
+	/* ---------- Status ---------- */
+	--color-error: #ef4444;
+	--color-error-text: #fca5a5;
+	--color-success: #10b981;
+	--color-success-text: #6ee7b7;
+
+	/* ---------- Text ---------- */
+	--color-text-strong: #ffffff;
+	--color-text-base: #f4f4f5;
+	--color-text-soft: #e4e4e7;
+	--color-text-dim: #d4d4d8;
+	--color-text-muted: #a1a1aa;
+	--color-text-faint: #9ca3af;
+	--color-text-placeholder: #52525b;
+
+	/* ---------- Surfaces ---------- */
+	--color-bg: #030014;
+	--color-card-bg: rgba(24, 24, 27, 0.65);
+	--color-card-bg-solid: rgba(24, 24, 27, 0.78);
+	--color-header-bg: rgba(3, 0, 20, 0.5);
+	--color-input-bg: rgba(9, 9, 11, 0.5);
+	--color-input-bg-focus: rgba(9, 9, 11, 0.7);
+	--color-surface-subtle: rgba(255, 255, 255, 0.05);
+	--color-surface-raised: rgba(255, 255, 255, 0.08);
+	--color-surface-hover: rgba(255, 255, 255, 0.1);
+	--color-surface-hover-strong: rgba(255, 255, 255, 0.2);
+	--color-surface-sunken: rgba(9, 9, 11, 0.4);
+	--color-spinner-track: rgba(255, 255, 255, 0.3);
+
+	/* ---------- Borders ---------- */
+	--color-border: rgba(255, 255, 255, 0.08);
+	--color-border-soft: rgba(255, 255, 255, 0.12);
+	--color-border-strong: rgba(255, 255, 255, 0.15);
+	--color-border-focus: rgba(99, 102, 241, 0.5);
+
+	/* ---------- Tints (translucent brand fills) ---------- */
+	--tint-primary: rgba(99, 102, 241, 0.15);
+	--tint-primary-weak: rgba(99, 102, 241, 0.12);
+	--tint-primary-border: rgba(99, 102, 241, 0.25);
+	--tint-primary-border-strong: rgba(99, 102, 241, 0.3);
+	--tint-accent: rgba(168, 85, 247, 0.15);
+	--tint-accent-hover: rgba(168, 85, 247, 0.16);
+	--tint-accent-border: rgba(168, 85, 247, 0.25);
+	--tint-accent-border-strong: rgba(168, 85, 247, 0.4);
+	--tint-pink: rgba(236, 72, 153, 0.15);
+	--tint-pink-weak: rgba(236, 72, 153, 0.1);
+	--tint-pink-border: rgba(236, 72, 153, 0.25);
+	--tint-pink-border-weak: rgba(236, 72, 153, 0.2);
+	--tint-error: rgba(239, 68, 68, 0.1);
+	--tint-error-border: rgba(239, 68, 68, 0.2);
+	--tint-success: rgba(16, 185, 129, 0.1);
+	--tint-success-border: rgba(16, 185, 129, 0.2);
+
+	/* ---------- Gradients ---------- */
+	--gradient-brand: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+	--gradient-logo: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent-light) 100%);
+	--gradient-heading: linear-gradient(to right, var(--color-text-strong), var(--color-text-soft));
+	--gradient-heading-strong: linear-gradient(to right, var(--color-text-strong), var(--color-text-dim));
+	--gradient-mesh-primary: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+	--gradient-mesh-accent: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+	--gradient-glow-primary: radial-gradient(circle, var(--tint-primary-weak) 0%, transparent 70%);
+	--gradient-glow-accent: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+	--gradient-glow-pink: radial-gradient(circle, var(--tint-pink) 0%, transparent 70%);
+
+	/* ---------- Elevation & focus ---------- */
+	--shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+	--shadow-card: 0 30px 60px -12px rgba(0, 0, 0, 0.55);
+	--shadow-card-hover: 0 30px 60px -10px rgba(0, 0, 0, 0.6), 0 0 30px 2px rgba(99, 102, 241, 0.08);
+	--shadow-avatar: 0 4px 12px rgba(99, 102, 241, 0.3);
+	--shadow-btn: 0 4px 20px rgba(99, 102, 241, 0.2);
+	--shadow-btn-soft: 0 4px 14px rgba(99, 102, 241, 0.15);
+	--shadow-btn-hover: 0 6px 24px rgba(99, 102, 241, 0.35), 0 0 16px rgba(168, 85, 247, 0.2);
+	--shadow-btn-hover-soft: 0 6px 20px rgba(99, 102, 241, 0.3);
+	--shadow-tab: 0 4px 12px rgba(0, 0, 0, 0.2);
+	--ring-focus: 0 0 0 3px rgba(99, 102, 241, 0.15), 0 4px 12px rgba(99, 102, 241, 0.05);
+	--ring-error: 0 0 0 3px rgba(239, 68, 68, 0.15);
+
+	/* ---------- Radii ---------- */
+	--radius-xs: 4px;
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 14px;
+	--radius-xl: 20px;
+	--radius-2xl: 24px;
+	--radius-3xl: 28px;
+	--radius-pill: 999px;
+
+	/* ---------- Typography ---------- */
+	--font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	/* ---------- Motion ---------- */
+	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-fast: 0.2s ease;
+	--transition-base: 0.2s var(--ease-standard);
+	--transition-slow: 0.3s var(--ease-standard);
+}

@@ -422,25 +422,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
 </script>
 
 <style>
-  /* Premium Glassmorphic Styling System */
-  :root {
-    --color-bg-mesh-1: rgba(99, 102, 241, 0.15);
-    --color-bg-mesh-2: rgba(168, 85, 247, 0.15);
-    --color-primary: #6366f1;
-    --color-primary-hover: #4f46e5;
-    --color-accent: #a855f7;
-    --color-text-base: #f4f4f5;
-    --color-text-muted: #a1a1aa;
-    --color-card-bg: rgba(24, 24, 27, 0.65);
-    --color-input-bg: rgba(9, 9, 11, 0.5);
-    --color-border: rgba(255, 255, 255, 0.08);
-    --color-border-focus: rgba(99, 102, 241, 0.5);
-    --color-error: #ef4444;
-    --color-success: #10b981;
-    --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    --font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
-
+  /* Premium Glassmorphic Styling System — tokens live in src/styles/theme.css */
   .auth-card-container {
     width: 100%;
     max-width: 460px;
@@ -462,15 +444,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--color-border);
-    border-radius: 24px;
+    border-radius: var(--radius-2xl);
     padding: 40px;
     box-shadow: var(--shadow-premium);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .auth-card:hover {
-    box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6), 
-                0 0 30px 2px rgba(99, 102, 241, 0.08);
+    box-shadow: var(--shadow-card-hover);
   }
 
   .auth-card-header {
@@ -485,7 +466,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     font-weight: 700;
     font-size: 1.25rem;
     letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+    background: var(--gradient-logo);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 20px;
@@ -494,7 +475,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
   .logo-icon {
     width: 24px;
     height: 24px;
-    stroke: #818cf8;
+    stroke: var(--color-primary-light);
   }
 
   .auth-card-header h2 {
@@ -502,7 +483,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     font-weight: 700;
     margin: 0 0 8px 0;
     letter-spacing: -0.5px;
-    background: linear-gradient(to right, #ffffff, #e4e4e7);
+    background: var(--gradient-heading);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -517,9 +498,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
   /* Tab controls */
   .auth-tabs {
     display: flex;
-    background: rgba(9, 9, 11, 0.4);
+    background: var(--color-surface-sunken);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 4px;
     margin-bottom: 28px;
   }
@@ -532,9 +513,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     font-size: 0.875rem;
     font-weight: 600;
     padding: 10px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-base);
   }
 
   .auth-tab:hover {
@@ -542,9 +523,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
   }
 
   .auth-tab.active {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--color-surface-raised);
     color: var(--color-text-base);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-tab);
   }
 
   /* Form components */
@@ -583,12 +564,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     position: relative;
     display: flex;
     align-items: center;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-base);
   }
 
   .input-wrapper:focus-within {
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15),
-                0 4px 12px rgba(99, 102, 241, 0.05);
+    box-shadow: var(--ring-focus);
   }
 
   .input-wrapper:focus-within input {
@@ -614,23 +594,22 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     width: 100%;
     background: var(--color-input-bg);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 13px 16px 13px 44px;
     color: var(--color-text-base);
     font-size: 0.9375rem;
     outline: none;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-base);
   }
 
   .input-wrapper input::placeholder {
-    color: #52525b;
+    color: var(--color-text-placeholder);
   }
 
   .input-wrapper input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15),
-                0 4px 12px rgba(99, 102, 241, 0.05);
-    background: rgba(9, 9, 11, 0.7);
+    box-shadow: var(--ring-focus);
+    background: var(--color-input-bg-focus);
   }
 
   .input-wrapper input:focus + .input-icon {
@@ -639,7 +618,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
 
   .input-wrapper input.error {
     border-color: var(--color-error);
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+    box-shadow: var(--ring-error);
   }
 
   .honeypot-field {
@@ -725,10 +704,10 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
   /* Submit button styling */
   .auth-btn {
     position: relative;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    background: var(--gradient-brand);
     border: none;
-    border-radius: 12px;
-    color: #ffffff;
+    border-radius: var(--radius-md);
+    color: var(--color-text-strong);
     font-size: 0.9375rem;
     font-weight: 600;
     padding: 14px;
@@ -737,14 +716,13 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+    transition: all var(--transition-slow);
+    box-shadow: var(--shadow-btn);
   }
 
   .auth-btn:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 6px 24px rgba(99, 102, 241, 0.35),
-                0 0 16px rgba(168, 85, 247, 0.2);
+    box-shadow: var(--shadow-btn-hover);
     filter: brightness(1.05);
   }
 
@@ -771,9 +749,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     position: absolute;
     width: 20px;
     height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid var(--color-spinner-track);
     border-radius: 50%;
-    border-top-color: #ffffff;
+    border-top-color: var(--color-text-strong);
     animation: spin 0.8s linear infinite;
   }
 
@@ -787,11 +765,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     font-size: 0.875rem;
     font-weight: 500;
     margin-bottom: 24px;
-    animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideDown var(--transition-slow);
     border: 1px solid transparent;
   }
 
@@ -800,15 +778,15 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || import.m
   }
 
   .auth-alert.error {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.2);
-    color: #fca5a5;
+    background: var(--tint-error);
+    border-color: var(--tint-error-border);
+    color: var(--color-error-text);
   }
 
   .auth-alert.success {
-    background: rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.2);
-    color: #6ee7b7;
+    background: var(--tint-success);
+    border-color: var(--tint-success-border);
+    color: var(--color-success-text);
   }
 
   .alert-icon {
